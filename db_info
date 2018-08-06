@@ -1,0 +1,14 @@
+database :
+create database db_draw;
+table:
+create table tb_draw_user
+(
+ id int PRIMARY key AUTO_INCREMENT,
+ username varchar(20) unique,
+ password varchar(20),
+ name varchar(20) unique,
+ age int,
+ sex int,
+ icon int,
+ score int
+);
