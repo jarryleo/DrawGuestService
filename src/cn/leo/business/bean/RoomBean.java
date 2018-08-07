@@ -96,6 +96,7 @@ public class RoomBean {
 
     //玩家进入房间
     public void addUser(UserBean user) {
+        if (user == null) return;
         if (mUsers.contains(user)) {
             mUsers.remove(user);
         }

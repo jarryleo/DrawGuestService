@@ -8,10 +8,12 @@ object ChannelManager {
     private var channelList = Collections.synchronizedList(ArrayList<Channel>())
     private var clientList = ConcurrentHashMap<Channel, Client>()
 
-    fun add(channel: Channel) {
+    fun add(channel: Channel): Client {
+        val client = Client(channel)
         channelList.add(channel)
-        clientList[channel] = Client(channel)
+        clientList[channel] = client
         Logger.d("有客户端接入:${channel.host}[总:${channelList.size}]")
+        return client
     }
 
     fun remove(channel: Channel) {

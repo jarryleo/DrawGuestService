@@ -136,7 +136,6 @@ public class MsgManager {
     public static void InterceptConnection(Client client, String errorMsg) {
         Logger.i("断开链接[" + client.getIp() + "] - " + errorMsg);
         UserManager.removeUser(client);
-        Logger.d("clientCount:" + UserManager.getUsers().size());
         client.close();
     }
 }

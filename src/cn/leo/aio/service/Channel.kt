@@ -7,7 +7,7 @@ import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousSocketChannel
 
-class Channel(var channel: AsynchronousSocketChannel, serviceListener: ServiceListener) {
+class Channel(var channel: AsynchronousSocketChannel, private val serviceListener: ServiceListener) {
     //客户端地址
     val host = (channel.remoteAddress as InetSocketAddress).hostString!!
     val buffer = ByteBuffer.allocate(Constant.packetSize)!!
@@ -57,6 +57,8 @@ class Channel(var channel: AsynchronousSocketChannel, serviceListener: ServiceLi
         try {
             ChannelManager.remove(this)
             channel.close()
+            val client = ChannelManager.getClient(this)
+            serviceListener.onConnectInterrupt(client!!)
         } catch (e: Exception) {
         }
     }

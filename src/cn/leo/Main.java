@@ -4,6 +4,7 @@ import cn.leo.aio.service.Client;
 import cn.leo.aio.service.Service;
 import cn.leo.aio.service.ServiceListener;
 import cn.leo.business.bean.UserBean;
+import cn.leo.business.message.GameControl;
 import cn.leo.business.message.MsgManager;
 import cn.leo.business.user.UserManager;
 import cn.leo.kotlin.utils.PropertiesUtil;
@@ -16,15 +17,13 @@ public class Main implements ServiceListener {
 
     public static void main(String[] args) {
         Service.INSTANCE.start(PropertiesUtil.INSTANCE.getPort(), new Main());
+        GameControl.startGameControl();// 开启游戏流程控制器
     }
 
     @Override
     public void onNewConnectComing(@NotNull Client client) {
         UserBean user = new UserBean(client);
         UserManager.addUser(client, user);
-        Logger.d("有客户端接入---" + user.getIp());
-        int size = UserManager.getUsers().size();
-        Logger.d("clientCount:" + size);
     }
 
     @Override
@@ -42,6 +41,7 @@ public class Main implements ServiceListener {
                 MsgManager.processPaint(client, data);
             } else {
                 msg = new String(data, "utf-8");
+                //Logger.d("收到" + client.getIp() + "消息:" + msg);
                 MsgManager.processMsg(client, msg);
             }
         } catch (UnsupportedEncodingException e) {
@@ -54,9 +54,6 @@ public class Main implements ServiceListener {
         UserBean user = UserManager.getUser(key);
         if (user == null || key == null)
             return;
-        Logger.d("有客户端失去连接---" + user.getIp());
         UserManager.removeUser(key);
-        int size = UserManager.getUsers().size();
-        Logger.d("clientCount:" + size);
     }
 }

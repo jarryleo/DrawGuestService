@@ -6,7 +6,7 @@ import java.nio.channels.CompletionHandler
 
 class Writer : CompletionHandler<Int, Channel> {
     override fun completed(result: Int?, channel: Channel?) {
-        //Logger.d("发送成功")
+        //Logger.d("发送成功:$result")
     }
 
     override fun failed(exc: Throwable?, channel: Channel?) {

@@ -46,10 +46,11 @@ internal class AioServiceCore {
     //接入回调
     private val handler =
             object : CompletionHandler<AsynchronousSocketChannel, ByteBuffer> {
-                override fun completed(client: AsynchronousSocketChannel?, p1: ByteBuffer?) {
+                override fun completed(clientChannel: AsynchronousSocketChannel?, p1: ByteBuffer?) {
                     asyncAccept()
-                    val channel = Channel(client!!, mServiceListener!!)
-                    ChannelManager.add(channel)
+                    val channel = Channel(clientChannel!!, mServiceListener!!)
+                    val client = ChannelManager.add(channel)
+                    mServiceListener!!.onNewConnectComing(client)
                 }
 
                 override fun failed(p0: Throwable?, p1: ByteBuffer?) {
